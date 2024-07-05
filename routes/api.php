@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ModuleTestController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('welcome', [ModuleTestController::class, 'index']);
+
+Route::prefix('events')->group(function () {
+    Route::get('/', [EventController::class, 'index'])->name('events.index');
+    Route::put('/updateStatus/{id}/{status}', [EventController::class, 'updateStatus'])->name('events.updateStatus');
+});
+
+Route::prefix('tickets')->group(function () {
+    Route::get('/', [TicketController::class, 'index'])->name('tickets.index');
+    Route::post('/store', [TicketController::class, 'store'])->name('tickets.store');
+  
+});
