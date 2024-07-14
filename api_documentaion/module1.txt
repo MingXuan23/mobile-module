@@ -3,7 +3,7 @@
 
 ## Events Routes
 ### Get All Events
-
+baseurl: http://10.1.1.1:8080/api/events
 - **Endpoint:** `GET /events`
 - example url : http://localhost:8080/api/events
 
@@ -28,6 +28,7 @@
 **Parameters:**
 - `type` (string): The type of the ticket. Must be either "Opening Ceremony Tickets" or "Closing Ceremony Tickets".
 - `name` (string): The name associated with the ticket.
+- `image` (file): the image of the ticket
 
 **Note:**
 - the seat will automatically assign

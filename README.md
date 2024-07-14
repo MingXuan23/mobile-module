@@ -15,4 +15,9 @@ from the output, find the container with name "yourfoldername-app-1"
 <br>
 run this command to open the terminal in the conatainer<br>
 docker exec -t -i container_name /bin/bash
+<br><br>
+
+php artisan migrate --seed <br>
+php artisam optimize
+
 

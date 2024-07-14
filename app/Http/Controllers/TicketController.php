@@ -6,6 +6,8 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -41,11 +43,26 @@ class TicketController extends Controller
     public function store(Request $request)
     {
         //
+        
+       
         try{
             if($request->type != 'Opening Ceremony Tickets' && $request->type != 'Closing Ceremony Tickets')
-            return response()->json(['message' => 'Bad Gateway'], Response::HTTP_BAD_GATEWAY);
+                return response()->json(['message' => 'Bad Gateway'], Response::HTTP_BAD_GATEWAY);
+
+            $rules = [
+                'image' => 'required|mimes:jpeg,png,jpg'
+            ];
+        
+            // Create the validator
+            $validator = Validator::make($request->all(), $rules);
+        
+            // Check if the validation fails
+            if ($validator->fails()) {
+                return response()->json(['message' => 'Bad Gateway'], Response::HTTP_BAD_GATEWAY);
+            }
 
             
+        
             $letters = range('A', 'Z');
             $randomLetter = $letters[array_rand($letters)];
             $randomNumber = rand(0, 9);
@@ -55,15 +72,31 @@ class TicketController extends Controller
             $column = $id % 10;
         
             $seat =  "{$randomLetter}{$randomNumber} Row{$row} Column{$column}";
-            DB::table('tickets')
-            ->insert([
+            $id = DB::table('tickets')
+            ->insertGetId([
                 'created_at'=>now(),
                 'updated_at' =>now(),
                 'type' => $request->type,
                 'seat' => $seat,
                 'name' => $request->name
             ]);
-            return response()->json(['message' => 'Success'], Response::HTTP_OK);
+
+            $extension = $request->image->extension();
+            $filename = $id . '.' . $extension;
+            $path =$request->file('image')->move(public_path('public/tickets'), $filename);
+            
+            $hostname = $request->getSchemeAndHttpHost();
+
+            $url = $hostname .'/public/tickets/'. $filename;
+            DB::table('tickets') 
+            ->where('id',$id)
+            ->update([
+                'image' => $url
+            ]);
+
+           $ticket = DB::table('tickets')->where('id',$id)->first();
+
+            return response()->json(['ticket' => $ticket], Response::HTTP_OK);
         }catch(Exception $e){
             return response()->json(['message' => 'Bad Gateway', 'error' => $e->getMessage()], Response::HTTP_BAD_GATEWAY);
 
