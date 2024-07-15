@@ -16,10 +16,18 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $tickets = DB::table('tickets')->get();
+        $hostname = $request->getSchemeAndHttpHost();
+        foreach($tickets as $t){
+
+            $basename = explode('/',$t->image);
+           // dd($basename);
+            $basename = $basename[count($basename) -1];
+            $t->image = $hostname .'/public/tickets/'. $basename;
+        }
         return response()->json(['tickets'=>$tickets]);
     }
 
