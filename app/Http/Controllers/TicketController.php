@@ -153,8 +153,14 @@ class TicketController extends Controller
      * @param  \App\Models\Ticker  $ticker
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticker $ticker)
+    public function destroy($id)
     {
         //
+        try{
+            $result = DB::table('tickets')->where('id',$id)->delete();
+            return response()->json(['result'=>$result]);
+        }catch(Exceotion $e){
+            return response()->json(['message' => 'Bad Gateway', 'error' => $e->getMessage()], Response::HTTP_BAD_GATEWAY);
+        }
     }
 }

@@ -32,5 +32,6 @@ Route::prefix('events')->group(function () {
 Route::prefix('tickets')->group(function () {
     Route::get('/', [TicketController::class, 'index'])->name('tickets.index');
     Route::post('/store', [TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/delete/{id}', [TicketController::class, 'destroy'])->name('tickets.destroy');
   
 });

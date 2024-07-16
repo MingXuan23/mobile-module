@@ -34,3 +34,10 @@ baseurl: http://10.1.1.1:8080/api/events
 - the seat will automatically assign
 
 
+### Delete a Ticket
+
+- **Endpoint:** `GET /tickets/delete/{id}`
+- example url : http://localhost:8080/api/tickets/delete/1
+
+**Parameters:**
+- `id` - id of the ticket
