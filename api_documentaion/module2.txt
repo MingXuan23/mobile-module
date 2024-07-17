@@ -1,0 +1,44 @@
+Module2 API Endpoints
+
+
+1. GET /api/m2/getSkillType
+Method: GET
+Endpoint: /api/m2/getSkillType
+Parameters: None
+Description: Retrieves all skill types from the database.
+
+
+2. GET /api/m2/getSkills
+Method: GET
+Endpoint: /api/m2/getSkills
+or
+/api/m2/getSkills?type=Social and Personal Services
+Parameters:
+type (optional query): Filter skills by type.
+Description: Retrieves skills from the database, optionally filtered by type.
+
+
+3. GET /api/m2/getPhotoPagination/{limit}
+Method: GET
+Endpoint: /api/m2/getPhotoPagination/{limit}
+Parameters:
+limit (path): Specifies the number of photos per page.
+Description: Returns the number of pages for photo pagination based on the specified limit.
+
+4. GET /api/m2/getPhotos
+Method: GET
+Endpoint: /api/m2/getPhotos
+Parameters:
+limit (query): Specifies the number of photos to retrieve per request.
+offset (query): Specifies the pagination offset.
+
+Description: Retrieves photos with pagination support. Photo links are prefixed with the hostname. Generates a random token for validation in updateView api call.
+
+5. POST /api/m2/updateView
+Method: POST
+Endpoint: /api/m2/updateView
+Parameters:
+Headers:
+token: Authentication token (from predefined list).
+photoID: ID of the photo to update.
+Description: Updates the view count of a photo identified by photoID. Returns the updated view count and photo ID upon success.
